@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
-import { Button, AppBar, Toolbar, IconButton, TextField, Typography, makeStyles } from '@material-ui/core';
+import { Button, TextField, Typography, makeStyles } from '@material-ui/core';
 import axios from 'axios';
 
 function AddPost() {
