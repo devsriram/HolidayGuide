@@ -1,26 +1,37 @@
+const multer = require('multer');
+const { v4: uuidv4 } = require('uuid');
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
+const Post = require('../models/event-model')
 
 router.get('/', (req,res) => {
     res.send("Hello There");
 })
 
-const postSchema = new mongoose.Schema({
-    title: String,
-    location: String,
-    desc: [String],
-    file: String,
-    date: {type: Date, default: Date.now},
-    likes: Number,
-    dislikes: Number
-});
+// const storage = multer.diskStorage({
+//     destination: function (req, file, cb) {
+//         cb(null, './images');
+//     },
+//     filename: function (req, file, cb) {
+//         cb(null, Date.now()+file.originalname);
+//     }
+// });
 
-const Post = mongoose.model('Course', postSchema);
+// const fileFilter = (req, file, cb) => {
+//     const allowedFileTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+//     if(allowedFileTypes.includes(file.mimetype)) {
+//         cb(null, true);
+//     } else {
+//         cb(null, false);
+//     }
+// }
 
-router.post('/', async function(req,res) {
+// var upload = multer({storage: storage});
+
+router.post('/', async (req,res) => {
     console.log("Server processing the data.....");
-    if(!req.body.title) {
+    if(!req.body) {
         console.log("Invalid details");
         return res.send("Invalid details");
     };
@@ -28,6 +39,7 @@ router.post('/', async function(req,res) {
         title: req.body.title,
         location: req.body.location,
         desc: req.body.desc,
+        fileName: req.body.fileName,
         date: req.body.date,
         likes: req.body.likes,
         dislikes: req.body.dislikes

@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import { Button, TextField, Typography, makeStyles } from '@material-ui/core';
 import axios from 'axios';
 
 function AddPost() {
+
+    // useEffect( () => {
+    //     getEventsData();
+    //   },[]);
 
     const styles = useStyles();
 
@@ -12,23 +16,29 @@ function AddPost() {
     const [desc,setDesc] = useState('');
     const [file,setFile] = useState('');
 
+    const handleFile = (e) => {
+        setFile(e.target.files[0]);
+    }
+
+
     const handleSubmit = () => {
         const postData = {
             title: title,
             location: location,
             desc: desc,
-            file: file,
-            date: new Date(),
+            fileName: file,
+            date: Date.now,
             likes:0,
             dislikes:0
         }
+        console.log("Submitted Values: ",postData);
         axios.post('http://localhost:5000/addPost',postData)
             .then((res) => { console.log("Data sent",res) })
             .catch((error) => {
                 console.log("Cannot send data to Database ",error);
             })
 
-    }
+        }
 
     return (
         <div className={styles.container}>
@@ -42,7 +52,7 @@ function AddPost() {
                 <TextField variant="outlined" label="Description" onChange={(val) => setDesc(val.target.value)} multiline rows={6} style={{width:'80%'}} />
             </div>
             <div className={styles.fileContainer}>
-                <label>Add an Image: <input type="file" name="image" onChange={(val) => setFile(val.target.value)} /></label>
+                <label>Add an Image: <input type="file" accept=".png, .jpg, .jpeg" name="image" onChange={handleFile} /></label>
             </div>
             <div className={styles.buttonContainer}>
             <Button variant="contained" color="primary" style={{width:'80%'}} onClick={handleSubmit} >Submit</Button>

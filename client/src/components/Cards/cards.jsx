@@ -1,10 +1,38 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Grid, makeStyles, Paper, Typography } from '@material-ui/core';
 import CardComponent from './card.jsx'
 import eventsData from './data'
+import { initialPostScheme } from '../Models/data-model';
+import axios from 'axios';
 
 function Cards() {
-    const styles = useStyles();
+
+  useEffect(() => {
+    getEventsData();
+  },[])
+
+  const styles = useStyles();
+  const [myEventsData, setMyEventsData] = useState([]);
+
+  const getEventsData = async () => {
+    console.log('Function has been called');
+    const response = await axios.get('http://localhost:5000/getPosts');
+    console.log("Server data: ",response.data);
+    setTimeout(async () => {
+      await setMyEventsData(response.data);
+    }, 3000);    
+    setTimeout(async () => {
+      await console.log("my Data",myEventsData);
+    }, 3000);    
+      // .then((response) => {
+      //   setMyEventsData(response);
+      //   console.log("Request sent");
+      //   console.log("Server data: ",response.data);
+      //   setMyEventsData(response.data);
+      //   console.log("my Data",myEventsData);
+      // })
+      // .catch((error) => console.log("Cannot fetch data",error));
+  }
 
     return (
         <div className={styles.root}>
