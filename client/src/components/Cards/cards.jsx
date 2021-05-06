@@ -4,42 +4,21 @@ import CardComponent from './card.jsx'
 import eventsData from './data'
 import { initialPostScheme } from '../Models/data-model';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 
-function Cards() {
-
-  useEffect(() => {
-    getEventsData();
-  },[])
+const Cards = () => {
 
   const styles = useStyles();
-  const [myEventsData, setMyEventsData] = useState([]);
 
-  const getEventsData = async () => {
-    console.log('Function has been called');
-    const response = await axios.get('http://localhost:5000/getPosts');
-    console.log("Server data: ",response.data);
-    setTimeout(async () => {
-      await setMyEventsData(response.data);
-    }, 3000);    
-    setTimeout(async () => {
-      await console.log("my Data",myEventsData);
-    }, 3000);    
-      // .then((response) => {
-      //   setMyEventsData(response);
-      //   console.log("Request sent");
-      //   console.log("Server data: ",response.data);
-      //   setMyEventsData(response.data);
-      //   console.log("my Data",myEventsData);
-      // })
-      // .catch((error) => console.log("Cannot fetch data",error));
-  }
+  const posts = useSelector((state) => state.posts);
+  console.log("Posts from server: ",posts);
 
     return (
         <div className={styles.root}>
             <Grid container spacing={2} xs={12} md={12} lg={12} xl={12}>
-              {eventsData.map(events => (
+              {posts.map(post => (
                 <Paper className = {styles.paper} elevation={8} >
-                  <CardComponent key={events.id} eventsList = {events} />
+                  <CardComponent key={post.id} posts = {post} />
                 </Paper>
               ))}
               

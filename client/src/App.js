@@ -5,28 +5,20 @@ import { makeStyles } from '@material-ui/core';
 import Cards from './components/Cards/cards'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import AddPost from './components/Posts/add-posts';
+import { useDispatch } from 'react-redux';
+import { getAllPosts } from './Requests/requests';
+
+
 import axios from 'axios';
 
 
 function App() {
     const styles = useStyles();
+    const dispatch = useDispatch();
 
-    // const [myEventsData, setMyEventsData] = useState([]);
-
-    // const getEventsData = async () => {
-    //   console.log('Function has been called');
-    //   await axios.get('http://localhost:5000/getPosts') 
-    //     .then((response) => {
-    //       setMyEventsData(response);
-    //       console.log("Request sent");
-    //       console.log(myEventsData);
-    //     })
-    //     .catch((error) => console.log("Cannot fetch data",error));
-    // }
-
-    // useEffect( () => {
-    //   getEventsData();
-    // },[]);
+    useEffect(() => {
+        dispatch(getAllPosts());
+    },[dispatch])
 
     return (
       <React.Fragment>

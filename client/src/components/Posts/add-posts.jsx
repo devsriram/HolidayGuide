@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import { Button, TextField, Typography, makeStyles } from '@material-ui/core';
 import axios from 'axios';
+import { useDispatch } from "react-redux";
+import { createPost } from "../../Requests/requests"
+import { getAllPosts } from '../../Requests/requests';
 
 function AddPost() {
 
-    // useEffect( () => {
-    //     getEventsData();
-    //   },[]);
+    const dispatch = useDispatch();
 
     const styles = useStyles();
 
@@ -26,18 +27,13 @@ function AddPost() {
             title: title,
             location: location,
             desc: desc,
-            fileName: file,
+            fileName: title,
             date: Date.now,
             likes:0,
             dislikes:0
         }
         console.log("Submitted Values: ",postData);
-        axios.post('http://localhost:5000/addPost',postData)
-            .then((res) => { console.log("Data sent",res) })
-            .catch((error) => {
-                console.log("Cannot send data to Database ",error);
-            })
-
+        dispatch(createPost(postData));
         }
 
     return (
