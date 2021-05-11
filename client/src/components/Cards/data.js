@@ -1,8 +1,8 @@
 const eventsData = [
     {
         id: 1,
-        name: 'K1 Speed',
-        place: 'Wilmington, Massachusetts',
+        title: 'K1 Speed',
+        location: 'Wilmington, Massachusetts',
         date: 2,
         likes: 31,
         dislikes: 11,
@@ -10,8 +10,8 @@ const eventsData = [
     },
     {
         id: 2,
-        name: 'Boston Common Carousel',
-        place: 'Boston, Massachusetts',
+        title: 'Boston Common Carousel',
+        location: 'Boston, Massachusetts',
         date: 10,
         likes: 46,
         dislikes: 10,
@@ -19,8 +19,8 @@ const eventsData = [
     },
     {
         id: 3,
-        name: 'New England Aquarium',
-        place: 'Boston, Massachusetts',
+        title: 'New England Aquarium',
+        location: 'Boston, Massachusetts',
         date: 15,
         likes: 41,
         dislikes: 14,
