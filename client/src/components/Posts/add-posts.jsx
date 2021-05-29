@@ -28,7 +28,7 @@ function AddPost() {
             location: location,
             desc: desc,
             fileName: title,
-            date: Date.now,
+            date: new Date(),
             likes:0,
             dislikes:0
         }

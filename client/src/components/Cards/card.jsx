@@ -1,19 +1,32 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Paper, CardContent, Typography, Grid, makeStyles, CardActions, Button, Box, Avatar } from '@material-ui/core';
 import k1speed from './images/k1speed.jpg';
 import { AccessAlarms } from '@material-ui/icons'
-import ThumbUpSharp from '@material-ui/icons/ThumbUpSharp';
+import ThumbDown from '@material-ui/icons/ThumbDown';
 import ThumbUpAltOutlinedIcon from '@material-ui/icons/ThumbUpAltOutlined';
+import ThumbUp from '@material-ui/icons/ThumbUp';
 import ThumbDownAltOutlinedIcon from '@material-ui/icons/ThumbDownAltOutlined';
+import { useDispatch } from "react-redux";
 import moment from 'moment';
+import { likePost, dislikePost } from "../../Requests/requests";
 
 
 function CardComponent({posts}) {
-
+    const dispatch = useDispatch();
     const styles = useStyles();
-    const startDate = moment(posts.date, 'DD-MM-YYYY');
-    const endDate = moment(Date.now, 'DD-MM-YYYY');
-    const days = endDate.diff(startDate, 'days');
+
+    const [likeToggle, setLikeToggle] = useState(false);
+    const [dislikeToggle, setDislikeToggle] = useState(false);
+
+    const postLiked = (id,likes) => {
+        dispatch(likePost(id,likes))
+        setLikeToggle(!likeToggle);
+    }
+
+    const postDisliked = (id,dislikes) => {
+        dispatch(dislikePost(id,dislikes));
+        setDislikeToggle(!dislikeToggle);
+    }
 
     return (
         <div className={styles.root}>
@@ -33,21 +46,23 @@ function CardComponent({posts}) {
                 <div className={styles.data3}>
                     <AccessAlarms fontSize = 'small' className = {styles.timeIcon} />
                     <Typography variant="body2" component="p" className={styles.timeData}>
-                        {`Posted ${days} days ago`}
+                        {`Posted ${moment(posts.date).fromNow()}`}
                     </Typography>
                 </div>
             </div>
             <div className={styles.container3}>
                 <div className={styles.data5} >
                     <div className={styles.data51}>
-                        <ThumbUpAltOutlinedIcon fontSize = 'large' />
-                        <Typography variant="body2" component="p" style={{paddingLeft: 8}}>
+                        {(likeToggle) ? (<Button onClick={() => setLikeToggle(!likeToggle)}><ThumbUp color='primary' fontSize = 'large' /></Button>)
+                            : (<Button onClick={() => postLiked(posts._id,posts.likes)} ><ThumbUpAltOutlinedIcon fontSize = 'large' /></Button>)}
+                        <Typography variant="body2" component="p">
                             {posts.likes}
                         </Typography>
                     </div>
                     <div className={styles.data52}>
-                    <ThumbDownAltOutlinedIcon fontSize = 'large' />
-                        <Typography variant="body2" component="p" style={{paddingLeft: 8}}>
+                    {(dislikeToggle) ? (<Button onClick={() => setDislikeToggle(!dislikeToggle)}><ThumbDown color='secondary' fontSize = 'large' /></Button>)
+                            : (<Button onClick={() => postDisliked(posts._id,posts.dislikes)} ><ThumbDownAltOutlinedIcon fontSize = 'large' /></Button>)}
+                        <Typography variant="body2" component="p">
                             {posts.dislikes}
                         </Typography>
                     </div>
@@ -126,19 +141,25 @@ const useStyles = makeStyles((theme) => ({
         paddingTop: 20
     },
     data51: {
-        alignItems: 'center',
+        display: 'flex',
         justifyContent: 'center',
+        alignItems: 'center',
         // border: `2px solid red`,
         width: '50%',
-        paddingLeft: 25
+        flexDirection: 'column',
     },
     data52: {
-        alignItems: 'center',
+        display: 'flex',
         justifyContent: 'center',
+        alignItems: 'center',
         // border: `2px solid red`,
         width: '50%',
-        paddingLeft: 25,
-    }
+        flexDirection: 'column',
+    },
+    likeButton : {
+        // alignItems: 'center',
+        // justifyContent: 'center',
+    },
 }));
 
 export default CardComponent;
